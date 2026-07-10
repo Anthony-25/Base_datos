@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="base de datos.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1904"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Clientes" custom_title="0" dock_id="1" table="4,8:mainClientes"/><dock_state state="000000ff00000000fd0000000100000002000003cb00000258fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000003cb0000011e00ffffff000002690000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Clientes" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="35"/><column index="2" value="52"/><column index="3" value="35"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">
+DROP TABLE IF EXISTS Venta;
+DROP TABLE IF EXISTS Computadora;
+DROP TABLE IF EXISTS Cliente;
+
+
+CREATE TABLE Cliente (
+    IdCliente INTEGER PRIMARY KEY AUTOINCREMENT,
+    Nombre TEXT NOT NULL,
+    Apellido TEXT NOT NULL,
+    Telefono TEXT NOT NULL,
+    Correo TEXT NOT NULL
+);
+
+
+CREATE TABLE Computadora (
+    IdComputadora INTEGER PRIMARY KEY AUTOINCREMENT,
+    Nombre TEXT NOT NULL,
+    Marca TEXT NOT NULL,
+    Procesador TEXT NOT NULL,
+    Tipo TEXT NOT NULL,
+    Precio REAL NOT NULL,
+    Stock INTEGER NOT NULL
+);
+
+CREATE TABLE Venta (
+    IdVenta INTEGER PRIMARY KEY AUTOINCREMENT,
+    IdCliente INTEGER NOT NULL,
+    IdComputadora INTEGER NOT NULL,
+    Fecha TEXT NOT NULL,
+    Cantidad INTEGER NOT NULL,
+
+    FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente),
+    FOREIGN KEY (IdComputadora) REFERENCES Computadora(IdComputadora)
+);
+
+INSERT INTO Cliente (Nombre, Apellido, Telefono, Correo)
+VALUES
+('Julio','Bastardo','8299202585','julio@gmail.com'),
+('Jessica','Ramirez','8099552870','jessica@gmail.com'),
+('Pedro','Gomez','8093333333','pedro@gmail.com'),
+('Ana','Martinez','8094444444','ana@gmail.com'),
+('Luis','Fernandez','8095555555','luis@gmail.com');
+
+-- ============================================
+-- REGISTROS DE COMPUTADORAS
+-- ============================================
+
+INSERT INTO Computadora
+(Nombre, Marca, Procesador, Tipo, Precio, Stock)
+VALUES
+('Laptop Victus','HP','Intel Core i5','Laptop',42000,5),
+('Inspiron 15','Dell','Intel Core i7','Laptop',52000,4),
+('ThinkPad E14','Lenovo','AMD Ryzen 5','Laptop',48000,6),
+('PC Gamer','MSI','AMD Ryzen 7','Escritorio',65000,3),
+('MacBook Air','Apple','M2','Laptop',85000,2);
+
+
+INSERT INTO Venta
+(IdCliente, IdComputadora, Fecha, Cantidad)
+VALUES
+(1,1,'2026-07-01',1),
+(2,3,'2026-07-02',2),
+(3,2,'2026-07-03',1),
+(4,5,'2026-07-04',1),
+(5,4,'2026-07-05',3);
+
+
+SELECT
+    Venta.IdVenta,
+    Cliente.Nombre,
+    Cliente.Apellido,
+    Computadora.Nombre AS Computadora,
+    Computadora.Marca,
+    Venta.Cantidad,
+    Venta.Fecha
+FROM Venta
+INNER JOIN Cliente
+ON Venta.IdCliente = Cliente.IdCliente
+INNER JOIN Computadora
+ON Venta.IdComputadora = Computadora.IdComputadora;</sql><current_tab id="0"/></tab_sql></sqlb_project>
